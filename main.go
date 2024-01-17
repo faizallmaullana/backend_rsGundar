@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
+	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
 	"github.com/faizallmaullana/be_rsGundar/models"
 )
 
@@ -25,7 +26,8 @@ func main() {
 	r.Use(cors.New(corsConfig))
 
 	// ROUTES
+	r.POST("/api/v1/resources/admin/registration", authentication.Registrasi)
 
 	// run the server
-	r.Run(":9888")
+	r.Run(":3200")
 }

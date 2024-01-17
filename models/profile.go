@@ -7,11 +7,11 @@ import "time"
 
 type Users struct {
 	ID        string    `json:"id" gorm:"primary_key"`
-	Name      string    `json:"name"`
+	Nip       string    `json:"nip"`
 	Role      string    `json:"role"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
-	IsDeleted string    `json:"is_deleted"`
+	IsDeleted bool      `json:"is_deleted"`
 
 	// foreign keys
 	IDProfile       string `json:"id_profile"`
@@ -23,11 +23,11 @@ type Users struct {
 }
 
 type Profile struct {
-	ID           string `json:"id" gorm:"primary_key"`
-	Nama         string `json:"nama"`
-	Gender       bool   `json:"gender"`
-	TanggalLahir string `json:"tanggal_lahir"`
-	Alamat       string `json:"alamat"`
+	ID           string    `json:"id" gorm:"primary_key"`
+	Nama         string    `json:"nama"`
+	Gender       bool      `json:"gender"`
+	TanggalLahir time.Time `json:"tanggal_lahir"`
+	Alamat       string    `json:"alamat"`
 }
 
 type ProfileDokter struct {
