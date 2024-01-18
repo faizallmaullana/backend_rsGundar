@@ -27,6 +27,7 @@ func main() {
 
 	// ROUTES
 	r.POST("/api/v1/resources/admin/registration", authentication.Registrasi)
+	r.POST("/api/v1/resources/login", authentication.Login)
 
 	// run the server
 	r.Run(":3200")

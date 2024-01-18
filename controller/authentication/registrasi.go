@@ -15,8 +15,10 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
+	"github.com/faizallmaullana/be_rsGundar/encryption"
 	"github.com/faizallmaullana/be_rsGundar/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -81,15 +83,19 @@ func Registrasi(c *gin.Context) {
 		return
 	}
 
-	// Now parsedTanggalLahir is in UTC+7
-	fmt.Println("Parsed date in UTC+7:", parsedTanggalLahir)
+	// enkripsi
+	role := encryption.Encrypt("admin")
+	nama := encryption.Encrypt(strings.ToLower(Registrasi.Nama))
+	alamat := encryption.Encrypt(strings.ToLower(Registrasi.Alamat))
+
+	password, _ := encryption.HashPassword(Registrasi.Password)
 
 	// save data for users table
 	User := models.Users{
 		ID:        idUser,
 		Nip:       nip,
-		Password:  Registrasi.Password,
-		Role:      "admin",
+		Password:  password,
+		Role:      role,
 		IDProfile: idProfile,
 	}
 
@@ -97,15 +103,9 @@ func Registrasi(c *gin.Context) {
 	Profile := models.Profile{
 		ID:           idProfile,
 		Gender:       Registrasi.Gender,
-		Nama:         Registrasi.Nama,
-		Alamat:       Registrasi.Alamat,
+		Nama:         nama,
+		Alamat:       alamat,
 		TanggalLahir: parsedTanggalLahir,
-	}
-
-	// cek if nip has same value
-	var DBUser models.Users
-	if err := models.DB.Where("nip = ?", nip).First(&DBUser).Error; err == nil {
-		Nip(Registrasi)
 	}
 
 	// save data to the database
