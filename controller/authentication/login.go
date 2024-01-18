@@ -1,6 +1,6 @@
 // authentication/login.go
 
-// Login <= /api/v1/resource/login
+// POST Login <= /api/v1/resources/login
 
 // di halaman ini terdapat fungsi untuk melakukan login
 // login dilakukan seperti biasa
@@ -42,10 +42,20 @@ func Login(c *gin.Context) {
 	// cek password
 	matchPassword := encryption.CheckPasswordHash(input.Password, user.Password)
 
-	if matchPassword == false {
+	if !matchPassword {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Password salah"})
 		return
 	}
+
+	// debuging========
+
+	var profile models.Profile
+	if err := models.DB.Where("id = ? ", user.IDProfile).First(&profile).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Profile tidak terdaftar"})
+		return
+	}
+
+	// ===============
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login Berhasil",

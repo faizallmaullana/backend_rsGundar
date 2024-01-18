@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
+	"github.com/faizallmaullana/be_rsGundar/controller/medical_record"
 	"github.com/faizallmaullana/be_rsGundar/models"
 )
 
@@ -26,8 +27,15 @@ func main() {
 	r.Use(cors.New(corsConfig))
 
 	// ROUTES
-	r.POST("/api/v1/resources/admin/registration", authentication.Registrasi)
+
+	// authentication
+	r.POST("/api/v1/resources/registration/dokter", authentication.RegistrasiDokter)
+	r.POST("/api/v1/resources/registration/admin", authentication.Registrasi)
+	r.POST("/api/v1/resources/registration/staffPendaftaran", authentication.RegistrasiStaffPendaftaran)
 	r.POST("/api/v1/resources/login", authentication.Login)
+
+	// poli
+	r.POST("/api/v1/resources/poli", medical_record.AddPoli)
 
 	// run the server
 	r.Run(":3200")

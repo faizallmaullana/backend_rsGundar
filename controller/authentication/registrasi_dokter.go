@@ -1,16 +1,16 @@
 // authentication/controller.go
 
-// POST Registrasi <= /api/v1/resource/admin/registration
+// POST Registrasi <= /api/v1/resource/dokter/registration
 
 // di halaman ini terdapat tanggal lahir, yang menerima data berupa string (dd-mm-yyyy)
+
+// NOTE: pada tambah dokter belum ditambahkan id poli
 
 package authentication
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -20,20 +20,10 @@ import (
 	"github.com/google/uuid"
 )
 
-type InputRegistrasi struct {
-	Nama         string `json:"nama"`
-	TanggalLahir string `json:"tanggal_lahir"`
-	Gender       bool   `json:"gender"`
-	Alamat       string `json:"alamat"`
-	Password     string `json:"password"`
-	Token        string `json:"token"`
-	Spesialisasi string `json:"spesialisasi"`
-}
-
 // ================================================================
 
-// Registration <= POST api/v1/resources/admin/registration
-func Registrasi(c *gin.Context) {
+// Registration <= POST api/v1/resources/dokter/registration
+func RegistrasiDokter(c *gin.Context) {
 
 	// request handler
 	var Registrasi InputRegistrasi
@@ -42,24 +32,10 @@ func Registrasi(c *gin.Context) {
 		return
 	}
 
-	// deklarasi token <= tokenAdmin jika belum ada siapapun yang daftar
-	var token string
-	var CekToken models.DBToken
-	if err := models.DB.First(&CekToken).Error; err != nil {
-		token = "tokenAdmin"
-	} else {
-		token = CekToken.Token
-	}
-
-	// cek token
-	if Registrasi.Token != token {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "TokenSalah"})
-		return
-	}
-
 	// generate the id
 	idUser := uuid.New().String()
 	idProfile := uuid.New().String()
+	idProfileDokter := uuid.New().String()
 
 	nip := Nip(Registrasi)
 
@@ -81,10 +57,10 @@ func Registrasi(c *gin.Context) {
 	}
 
 	// enkripsi
-	role := encryption.Encrypt("admin")
+	role := encryption.Encrypt("dokter")
 	nama := encryption.Encrypt(strings.ToLower(Registrasi.Nama))
 	alamat := encryption.Encrypt(strings.ToLower(Registrasi.Alamat))
-
+	spesialisasi := encryption.Encrypt(strings.ToLower(Registrasi.Spesialisasi))
 	password, _ := encryption.HashPassword(Registrasi.Password)
 
 	// save data for users table
@@ -105,29 +81,16 @@ func Registrasi(c *gin.Context) {
 		TanggalLahir: parsedTanggalLahir,
 	}
 
+	// save data for profile dokter table
+	ProfileDokter := models.ProfileDokter{
+		ID:           idProfileDokter,
+		Spesialisasi: spesialisasi,
+	}
+
 	// save data to the database
 	models.DB.Create(&User)
 	models.DB.Create(&Profile)
-
-	// generate tokenBaru
-	if err := models.DB.First(&CekToken).Error; err != nil {
-		idToken := uuid.New().String()
-
-		generateToken := rand.Intn(9000) + 1000
-		generatedToken := models.DBToken{
-			ID:    idToken,
-			Token: strconv.Itoa(generateToken),
-		}
-
-		models.DB.Create(generatedToken)
-	} else {
-		generateToken := rand.Intn(9000) + 1000
-		generatedToken := models.DBToken{
-			Token: strconv.Itoa(generateToken),
-		}
-
-		models.DB.Model(&CekToken).Update(generatedToken)
-	}
+	models.DB.Create(&ProfileDokter)
 
 	c.JSON(http.StatusOK, gin.H{
 		"id":   User.ID,

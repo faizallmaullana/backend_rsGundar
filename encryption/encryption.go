@@ -2,7 +2,7 @@ package encryption
 
 // Fungsi untuk mengenkripsi teks dengan menggunakan nilai geser dari kunci
 func Encrypt(text string) string {
-	key := "kjakOIDHFodianlKHOsnlfsnOIDsknOIHDF"
+	key := "hdafldhfadfkjbasdofaosiflksdnflk"
 	result := ""
 	keyLen := len(key)
 
@@ -23,7 +23,7 @@ func Encrypt(text string) string {
 
 // Fungsi untuk mendekripsi teks yang telah dienkripsi dengan menggunakan nilai geser dari kunci
 func Decrypt(text string) string {
-	key := "kjakOIDHFodianlKHOsnlfsnOIDsknOIHDF"
+	key := "hdafldhfadfkjbasdofaosiflksdnflk"
 
 	result := ""
 	keyLen := len(key)
