@@ -28,6 +28,13 @@ func AddPoli(c *gin.Context) {
 		return
 	}
 
+	// cek jika ada nama poli yabg sama
+	var dbPoli models.Poli
+	if err := models.DB.Where("poli = ?", encryption.Encrypt(input.Poli)).First(&dbPoli).Error; err == nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "Poli sudah terdaftar"})
+		return
+	}
+
 	// generate id
 	id := uuid.New().String()
 

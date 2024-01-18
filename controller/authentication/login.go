@@ -47,16 +47,6 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// debuging========
-
-	var profile models.Profile
-	if err := models.DB.Where("id = ? ", user.IDProfile).First(&profile).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Profile tidak terdaftar"})
-		return
-	}
-
-	// ===============
-
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login Berhasil",
 		"id":      user.ID,
