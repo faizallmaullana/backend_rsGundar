@@ -4,8 +4,6 @@
 
 // di halaman ini terdapat tanggal lahir, yang menerima data berupa string (dd-mm-yyyy)
 
-// NOTE: pada tambah dokter belum ditambahkan id poli
-
 package authentication
 
 import (
@@ -65,11 +63,12 @@ func RegistrasiDokter(c *gin.Context) {
 
 	// save data for users table
 	User := models.Users{
-		ID:        idUser,
-		Nip:       nip,
-		Password:  password,
-		Role:      role,
-		IDProfile: idProfile,
+		ID:              idUser,
+		Nip:             nip,
+		Password:        password,
+		Role:            role,
+		IDProfile:       idProfile,
+		IDProfileDokter: idProfileDokter,
 	}
 
 	// save data for profile table
@@ -85,6 +84,7 @@ func RegistrasiDokter(c *gin.Context) {
 	ProfileDokter := models.ProfileDokter{
 		ID:           idProfileDokter,
 		Spesialisasi: spesialisasi,
+		IDPoli:       Registrasi.PoliID,
 	}
 
 	// save data to the database

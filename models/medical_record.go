@@ -33,12 +33,10 @@ type TempPendaftaran struct {
 	// foreign keys
 	IDPasien string `json:"id_pasien"`
 	IDDokter string `json:"id_dokter"`
-	IDPoli   string `json:"id_poli"`
 
 	// reference to
-	Pasien Pasien        `json:"pisien" references:"IDPasien"`
-	Dokter ProfileDokter `json:"profile_dokter" references:"IDokter"`
-	Poli   Poli          `json:"poli" referernces:"IDPoli"`
+	Pasien Pasien        `json:"pisien" gorm:"primaryKey:IDPasien"`
+	Dokter ProfileDokter `json:"profile_dokter" gorm:"primaryKey:IDokter"`
 }
 
 type MedicalRecord struct {
@@ -52,13 +50,11 @@ type MedicalRecord struct {
 	IDPasien    string `json:"id_pasien"`
 	IDDokter    string `json:"id_dokter"`
 	IDDiagnosis string `json:"id_diagnosis"`
-	IDPoli      string `json:"id_poli"`
 
 	// reference to
-	Pasien    Pasien        `json:"pasien" refenrences:"IDPasien"`
-	Dokter    ProfileDokter `json:"profile_dokter" refenrences:"IDDokter"`
-	Diagnosis Diagnosis     `json:"diagnosis" refenrences:"IDDiagnosis"`
-	Poli      Poli          `json:"poli" references:"IDPoli"`
+	Pasien    Pasien        `json:"pasien" gorm:"primaryKey:IDPasien"`
+	Dokter    ProfileDokter `json:"profile_dokter" gorm:"primaryKey:IDDokter"`
+	Diagnosis Diagnosis     `json:"diagnosis" gorm:"primaryKey:IDDiagnosis"`
 }
 
 type Income struct {

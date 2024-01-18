@@ -18,8 +18,8 @@ type Users struct {
 	IDProfileDokter string `json:"id_profile_dokter"`
 
 	// references to
-	Profile       Profile       `json:"profile" references:"IDProfile"`
-	ProfileDokter ProfileDokter `json:"profile_dokter" references:"IDProfileDokter"`
+	Profile       Profile       `json:"profile" gorm:"foreignKey:IDProfile"`
+	ProfileDokter ProfileDokter `json:"profile_dokter" gorm:"foreignKey:IDProfileDokter"`
 }
 
 type Profile struct {
@@ -38,7 +38,7 @@ type ProfileDokter struct {
 	IDPoli string `json:"id_poli"`
 
 	// references to
-	Poli Poli `json:"poli" references:"IDPoliPoli"`
+	Poli Poli `json:"poli" gorm:"foreignKey:IDPoli"`
 }
 
 type DBToken struct {

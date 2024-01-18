@@ -28,6 +28,7 @@ type InputRegistrasi struct {
 	Password     string `json:"password"`
 	Token        string `json:"token"`
 	Spesialisasi string `json:"spesialisasi"`
+	PoliID       string `json:"poli_id"`
 }
 
 // ================================================================

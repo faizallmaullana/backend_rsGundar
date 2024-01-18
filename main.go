@@ -6,6 +6,7 @@ import (
 
 	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
 	"github.com/faizallmaullana/be_rsGundar/controller/medical_record"
+	"github.com/faizallmaullana/be_rsGundar/controller/profile"
 	"github.com/faizallmaullana/be_rsGundar/models"
 )
 
@@ -36,6 +37,12 @@ func main() {
 
 	// poli
 	r.POST("/api/v1/resources/poli", medical_record.AddPoli)
+
+	// profile
+	r.GET("/api/v1/resources/profile/:user_id", profile.Profile)
+
+	// medical records
+	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)
 
 	// run the server
 	r.Run(":3200")
