@@ -59,7 +59,15 @@ func RegistrasiDokter(c *gin.Context) {
 	nama := encryption.Encrypt(strings.ToLower(Registrasi.Nama))
 	alamat := encryption.Encrypt(strings.ToLower(Registrasi.Alamat))
 	spesialisasi := encryption.Encrypt(strings.ToLower(Registrasi.Spesialisasi))
-	password, _ := encryption.HashPassword(Registrasi.Password)
+	password, _ := encryption.HashPassword("default")
+
+	// convert request gender to bool
+	var gender bool
+	if Registrasi.Gender == "pria" {
+		gender = true
+	} else if Registrasi.Gender == "wanita" {
+		gender = false
+	}
 
 	// save data for users table
 	User := models.Users{
@@ -74,7 +82,7 @@ func RegistrasiDokter(c *gin.Context) {
 	// save data for profile table
 	Profile := models.Profile{
 		ID:           idProfile,
-		Gender:       Registrasi.Gender,
+		Gender:       gender,
 		Nama:         nama,
 		Alamat:       alamat,
 		TanggalLahir: parsedTanggalLahir,

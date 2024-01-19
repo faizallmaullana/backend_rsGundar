@@ -23,7 +23,7 @@ import (
 type InputRegistrasi struct {
 	Nama         string `json:"nama"`
 	TanggalLahir string `json:"tanggal_lahir"`
-	Gender       bool   `json:"gender"`
+	Gender       string `json:"gender"`
 	Alamat       string `json:"alamat"`
 	Password     string `json:"password"`
 	Token        string `json:"token"`
@@ -86,6 +86,14 @@ func Registrasi(c *gin.Context) {
 	nama := encryption.Encrypt(strings.ToLower(Registrasi.Nama))
 	alamat := encryption.Encrypt(strings.ToLower(Registrasi.Alamat))
 
+	// convert request gender to bool
+	var gender bool
+	if Registrasi.Gender == "pria" {
+		gender = true
+	} else if Registrasi.Gender == "wanita" {
+		gender = false
+	}
+
 	password, _ := encryption.HashPassword(Registrasi.Password)
 
 	// save data for users table
@@ -100,7 +108,7 @@ func Registrasi(c *gin.Context) {
 	// save data for profile table
 	Profile := models.Profile{
 		ID:           idProfile,
-		Gender:       Registrasi.Gender,
+		Gender:       gender,
 		Nama:         nama,
 		Alamat:       alamat,
 		TanggalLahir: parsedTanggalLahir,

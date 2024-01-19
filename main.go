@@ -7,6 +7,7 @@ import (
 	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
 	"github.com/faizallmaullana/be_rsGundar/controller/medical_record"
 	"github.com/faizallmaullana/be_rsGundar/controller/profile"
+	"github.com/faizallmaullana/be_rsGundar/controller/statistik"
 	"github.com/faizallmaullana/be_rsGundar/models"
 )
 
@@ -43,6 +44,9 @@ func main() {
 
 	// medical records
 	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)
+
+	// statistik
+	r.GET("/api/v1/resources/statistik", statistik.Statistik)
 
 	// run the server
 	r.Run(":3200")
