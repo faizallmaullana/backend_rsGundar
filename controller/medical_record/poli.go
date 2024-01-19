@@ -20,7 +20,18 @@ type InputPoli struct {
 	Poli string `json:"poli"`
 }
 
-// POST Registrasi <= /api/v1/resources/poli
+// GET Poli
+func GetAllPoli(c *gin.Context) {
+	var poli []models.Poli
+	if err := models.DB.Find(&poli).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"poli": poli})
+}
+
+// POST Poli <= /api/v1/resources/poli
 func AddPoli(c *gin.Context) {
 	var input InputPoli
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -48,5 +59,5 @@ func AddPoli(c *gin.Context) {
 	}
 
 	models.DB.Create(&poli)
-	c.JSON(http.StatusOK, gin.H{"message": "data berhasil direkam"})
+	c.JSON(http.StatusCreated, gin.H{"message": "data berhasil direkam"})
 }

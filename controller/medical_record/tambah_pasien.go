@@ -49,6 +49,13 @@ func TambahPasien(c *gin.Context) {
 		return
 	}
 
+	// Parse the date in the specified location
+	parsedTanggalLahir, err := time.ParseInLocation(layout, date, location)
+	if err != nil {
+		fmt.Println("Error parsing time:", err)
+		return
+	}
+
 	// convert request gender to bool
 	var gender bool
 	if input.Gender == "pria" {
@@ -57,12 +64,6 @@ func TambahPasien(c *gin.Context) {
 		gender = false
 	}
 
-	// Parse the date in the specified location
-	parsedTanggalLahir, err := time.ParseInLocation(layout, date, location)
-	if err != nil {
-		fmt.Println("Error parsing time:", err)
-		return
-	}
 	dataPasien := models.Pasien{
 		ID:           id,
 		Nik:          input.Nik,

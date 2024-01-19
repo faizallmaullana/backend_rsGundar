@@ -138,7 +138,7 @@ func Registrasi(c *gin.Context) {
 		models.DB.Model(&CekToken).Update(generatedToken)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"id":   User.ID,
 		"nip":  User.Nip,
 		"role": encryption.Decrypt(User.Role),
