@@ -33,6 +33,7 @@ type TempPendaftaran struct {
 	// foreign keys
 	IDPasien string `json:"id_pasien"`
 	IDDokter string `json:"id_dokter"`
+	Biaya    string `json:"biaya"`
 
 	// reference to
 	Pasien Pasien        `json:"pisien" gorm:"primaryKey:IDPasien"`
