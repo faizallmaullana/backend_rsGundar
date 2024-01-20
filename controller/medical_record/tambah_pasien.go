@@ -1,3 +1,5 @@
+// POST TambahPasien <= /pasien/tambah
+
 package medical_record
 
 import (

@@ -45,6 +45,7 @@ func main() {
 
 	// medical records
 	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)
+	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)
 
 	// statistik
 	r.GET("/api/v1/resources/statistik", statistik.Statistik)
