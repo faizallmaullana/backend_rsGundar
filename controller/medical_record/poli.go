@@ -20,7 +20,7 @@ type InputPoli struct {
 	Poli string `json:"poli"`
 }
 
-// GET Poli
+// GET GetAllPoli <= /api/v1/resources/poli
 func GetAllPoli(c *gin.Context) {
 	var poli []models.Poli
 	if err := models.DB.Find(&poli).Error; err != nil {

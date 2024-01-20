@@ -38,6 +38,7 @@ func main() {
 
 	// poli
 	r.POST("/api/v1/resources/poli", medical_record.AddPoli)
+	r.GET("/api/v1/resources/poli", medical_record.GetAllPoli)
 
 	// profile
 	r.GET("/api/v1/resources/profile/:user_id", profile.Profile)
