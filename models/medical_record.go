@@ -6,7 +6,7 @@ package models
 import "time"
 
 type Pasien struct {
-	ID           string    `json:"id"`
+	ID           string    `json:"id" gorm:"primary_key"`
 	Nik          string    `json:"nik"`
 	Nama         string    `json:"nama"`
 	TanggalLahir time.Time `json:"tanggal_lahir"`
@@ -15,14 +15,14 @@ type Pasien struct {
 }
 
 type Poli struct {
-	ID        string    `json:"id"`
+	ID        string    `json:"id" gorm:"primary_key"`
 	Poli      string    `json:"poli"`
 	CreatedAt time.Time `json:"created_at"`
 	Total     int       `json:"total"`
 }
 
 type Diagnosis struct {
-	ID        string `json:"id"`
+	ID        string `json:"id" gorm:"primary_key"`
 	Diagnosis string `json:"diagnosis"`
 	Total     int64  `json:"total"`
 }
@@ -31,17 +31,17 @@ type TempPendaftaran struct {
 	ID string `json:"id"`
 
 	// foreign keys
-	IDPasien string `json:"id_pasien"`
+	IDPasien string `json:"id_pasien" gorm:"primary_key"`
 	IDDokter string `json:"id_dokter"`
 	Biaya    string `json:"biaya"`
 
 	// reference to
-	Pasien Pasien        `json:"pisien" gorm:"primaryKey:IDPasien"`
-	Dokter ProfileDokter `json:"profile_dokter" gorm:"primaryKey:IDokter"`
+	Pasien Pasien        `json:"pisien" gorm:"foreignKey:IDPasien"`
+	Dokter ProfileDokter `json:"profile_dokter" gorm:"foreignKey:IDokter"`
 }
 
 type MedicalRecord struct {
-	ID        string    `json:"id"`
+	ID        string    `json:"id" gorm:"primary_key"`
 	Gejala    string    `json:"gejala"`
 	Obat      string    `json:"obat"`
 	Biaya     int       `json:"biaya"`
@@ -53,12 +53,12 @@ type MedicalRecord struct {
 	IDDiagnosis string `json:"id_diagnosis"`
 
 	// reference to
-	Pasien    Pasien        `json:"pasien" gorm:"primaryKey:IDPasien"`
-	Dokter    ProfileDokter `json:"profile_dokter" gorm:"primaryKey:IDDokter"`
-	Diagnosis Diagnosis     `json:"diagnosis" gorm:"primaryKey:IDDiagnosis"`
+	Pasien    Pasien        `json:"pasien" gorm:"foreignKey:IDPasien"`
+	Dokter    ProfileDokter `json:"profile_dokter" gorm:"foreignKey:IDDokter"`
+	Diagnosis Diagnosis     `json:"diagnosis" gorm:"foreignKey:IDDiagnosis"`
 }
 
 type Income struct {
-	ID     string `json:"id"`
+	ID     string `json:"id"gorm:"primary_key"`
 	Income int    `json:"income"`
 }
