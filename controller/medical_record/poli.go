@@ -38,6 +38,7 @@ func GetAllPoli(c *gin.Context) {
 			"id":   poli.ID, // Assuming ID is the field name in the Poli struct
 		})
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"poli": decryptedPoliList,
 	})
