@@ -1,10 +1,13 @@
 // POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
+// GET DataFromPendaftaran <= /data/from/pendaftaran/id_pendaftaran
 
 package medical_record
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/faizallmaullana/be_rsGundar/encryption"
 	"github.com/faizallmaullana/be_rsGundar/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -48,5 +51,33 @@ func PendafataranMedicalRecord(c *gin.Context) {
 		"id_pasien":      dataPendaftaran.IDPasien,
 		"id_dokter":      dataPendaftaran.IDDokter,
 		"id_poli":        profileDokter.ProfileDokter.IDPoli,
+	})
+}
+
+// GET DataFromPendaftaran <= /data/from/pendaftaran/:id_pendaftaran
+func DataFromPendaftaran(c *gin.Context) {
+	var TempPendaftaran models.TempPendaftaran
+	if err := models.DB.Where("id = ?", c.Param("id_pendaftaran")).Preload("Pasien").First(&TempPendaftaran).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "tidak bisa mengakses database"})
+		return
+	}
+
+	// formated tanggal lahir
+	// Assuming you have a time.Time variable named "myDate"
+	myDate := TempPendaftaran.Pasien.TanggalLahir
+
+	// Format the date to "02 01 06" layout
+	formattedDate := myDate.Format("02-01-2006")
+
+	// dektripsi
+	nama := strings.Title(encryption.Decrypt(TempPendaftaran.Pasien.Nama))
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":            TempPendaftaran.ID,
+		"id_dokter":     TempPendaftaran.IDDokter,
+		"id_pasien":     TempPendaftaran.IDPasien,
+		"biaya":         TempPendaftaran.Biaya,
+		"nama":          nama,
+		"tanggal_lahir": formattedDate,
 	})
 }
