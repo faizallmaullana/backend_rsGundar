@@ -45,13 +45,13 @@ func AntrianPoli(c *gin.Context) {
 	for _, antrian := range AntrianSelesai {
 		decryptedName := strings.Title(encryption.Decrypt(antrian.Pasien.Nama))
 		kunjunganSelesai = append(kunjunganSelesai, map[string]interface{}{
-			"name": decryptedName,
+			"nama": decryptedName,
 			"id":   antrian.ID,
 		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"selesai_diperiksa":       AntrianSelesai,
+		"selesai_diperiksa":       kunjunganSelesai,
 		"belum_selesai_diperiksa": decryptedAntrian,
 	})
 }
