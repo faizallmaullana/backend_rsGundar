@@ -24,7 +24,7 @@ type Poli struct {
 type Diagnosis struct {
 	ID        string `json:"id" gorm:"primary_key"`
 	Diagnosis string `json:"diagnosis"`
-	Total     int64  `json:"total"`
+	Total     int    `json:"total"`
 }
 
 type TempPendaftaran struct {
@@ -33,7 +33,7 @@ type TempPendaftaran struct {
 	// foreign keys
 	IDPasien string `json:"id_pasien" gorm:"primary_key"`
 	IDDokter string `json:"id_dokter"`
-	Biaya    string `json:"biaya"`
+	Biaya    int    `json:"biaya"`
 
 	// reference to
 	Pasien Pasien        `json:"pisien" gorm:"foreignKey:IDPasien"`
@@ -59,6 +59,6 @@ type MedicalRecord struct {
 }
 
 type Income struct {
-	ID     string `json:"id"gorm:"primary_key"`
+	ID     string `json:"id" gorm:"primary_key"`
 	Income int    `json:"income"`
 }

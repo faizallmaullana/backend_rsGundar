@@ -13,7 +13,7 @@ import (
 type InputPendaftaran struct {
 	DokterID string `json:"dokter_id"`
 	PasienID string `json:"pasien_id"`
-	Biaya    string `json:"biaya"`
+	Biaya    int    `json:"biaya"`
 }
 
 // POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
@@ -25,7 +25,7 @@ func PendafataranMedicalRecord(c *gin.Context) {
 	}
 
 	var profileDokter models.Users
-	if err := models.DB.Where("id = ?", input.DokterID).Preload("Dokter").First(&profileDokter).Error; err != nil {
+	if err := models.DB.Where("id = ?", input.DokterID).Preload("Profile").Preload("ProfileDokter.Poli").First(&profileDokter).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Dokter tidak ditemukan"})
 		return
 	}
@@ -43,6 +43,7 @@ func PendafataranMedicalRecord(c *gin.Context) {
 	models.DB.Create(&dataPendaftaran)
 
 	c.JSON(http.StatusCreated, gin.H{
+		"message":        "sukses",
 		"id_pendaftaran": dataPendaftaran.ID,
 		"id_pasien":      dataPendaftaran.IDPasien,
 		"id_dokter":      dataPendaftaran.IDDokter,

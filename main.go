@@ -31,23 +31,23 @@ func main() {
 	// ROUTES
 
 	// authentication
-	r.POST("/api/v1/resources/registration/dokter", authentication.RegistrasiDokter)
-	r.POST("/api/v1/resources/registration/admin", authentication.Registrasi)
-	r.POST("/api/v1/resources/registration/staffPendaftaran", authentication.RegistrasiStaffPendaftaran)
+	r.POST("/api/v1/resources/registration/dokter", authentication.RegistrasiDokter)                     // tested
+	r.POST("/api/v1/resources/registration/admin", authentication.Registrasi)                            // tested
+	r.POST("/api/v1/resources/registration/staffPendaftaran", authentication.RegistrasiStaffPendaftaran) // tested
 	r.POST("/api/v1/resources/login", authentication.Login)
 
 	// poli
-	r.POST("/api/v1/resources/poli", medical_record.AddPoli)
-	r.GET("/api/v1/resources/poli", medical_record.GetAllPoli)
+	r.POST("/api/v1/resources/poli", medical_record.AddPoli)   // tested
+	r.GET("/api/v1/resources/poli", medical_record.GetAllPoli) // tested
 
 	// profile
-	r.GET("/api/v1/resources/profile/:user_id", profile.Profile)
+	r.GET("/api/v1/resources/profile/:user_id", profile.Profile) // tested
 
 	// medical records
-	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)
-	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)
-	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)
-	r.POST("/api/v1/resources/medicalRecord/pendaftaran", medical_record.PendafataranMedicalRecord)
+	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)               //
+	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)                                // tested
+	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)                          // tested
+	r.POST("/api/v1/resources/medicalRecord/pendaftaran", medical_record.PendafataranMedicalRecord) // tested
 
 	// statistik
 	r.GET("/api/v1/resources/statistik", statistik.Statistik)
