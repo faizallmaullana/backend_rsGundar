@@ -24,7 +24,7 @@ func AntrianPoli(c *gin.Context) {
 	for _, antrian := range Antrian {
 		decryptedName := strings.Title(encryption.Decrypt(antrian.Pasien.Nama))
 		decryptedAntrian = append(decryptedAntrian, map[string]interface{}{
-			"name": decryptedName,
+			"nama": decryptedName,
 			"id":   antrian.ID,
 		})
 	}
@@ -39,6 +39,15 @@ func AntrianPoli(c *gin.Context) {
 	if err := dbAntrianSelesai.Find(&AntrianSelesai).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "data medis tidak ditemukan"})
 		return
+	}
+
+	var kunjunganSelesai []map[string]interface{}
+	for _, antrian := range AntrianSelesai {
+		decryptedName := strings.Title(encryption.Decrypt(antrian.Pasien.Nama))
+		kunjunganSelesai = append(kunjunganSelesai, map[string]interface{}{
+			"name": decryptedName,
+			"id":   antrian.ID,
+		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{

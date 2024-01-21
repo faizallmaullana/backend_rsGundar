@@ -34,7 +34,7 @@ func Nip(registrasi InputRegistrasi) (nip string) {
 	bulanMasuk = int(masuk.Month())
 
 	// Generate Nip
-	nip = fmt.Sprintf("01%02d%2s%02d%2s%02d", bulanMasuk, tahunMasukStr[2:], bulanLahir, tahunLahirStr[2:], randomNumber)
+	nip = fmt.Sprintf("%02d%2s%02d%2s%02d", bulanMasuk, tahunMasukStr[2:], bulanLahir, tahunLahirStr[2:], randomNumber)
 
 	return nip
 }

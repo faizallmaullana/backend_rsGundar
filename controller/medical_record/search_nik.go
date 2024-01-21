@@ -33,17 +33,42 @@ func SearchNik(c *gin.Context) {
 		gender = "Pria"
 	}
 
+	// medicalRecord
+	var MedicalRecords []models.MedicalRecord
+	db := models.DB.Where("id_pasien = ?", Pasien.ID)
+	dbPreload := db.Preload("Diagnosis").Preload("Dokter.Profile").Preload("Dokter.ProfileDokter.Poli")
+	if err := dbPreload.Find(&MedicalRecords).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "data medis tidak ditemukan"})
+		return
+	}
+
+	var decryptedData []map[string]interface{}
+	for _, record := range MedicalRecords {
+		dokter := strings.Title(encryption.Decrypt(record.Dokter.Profile.Nama))
+		poli := strings.Title(encryption.Decrypt(record.Dokter.ProfileDokter.Poli.Poli))
+		diagnosis := strings.Title(encryption.Decrypt(record.Diagnosis.Diagnosis))
+		decryptedData = append(decryptedData, map[string]interface{}{
+			"id":        record.ID,
+			"dokter":    dokter,
+			"poli":      poli,
+			"diagnosis": diagnosis,
+		})
+	}
+
 	c.JSON(http.StatusFound, gin.H{
-		"message": "Nik ditemukan",
-		"status":  true,
-		"id":      Pasien.ID,
-		"nik":     Pasien.Nik,
-		"alamat":  alamat,
-		"nama":    nama,
-		"gender":  gender,
+		"message":       "Nik ditemukan",
+		"status":        true,
+		"id":            Pasien.ID,
+		"nik":           Pasien.Nik,
+		"alamat":        alamat,
+		"nama":          nama,
+		"gender":        gender,
+		"data_medis":    decryptedData,
+		"tanggal_lahir": Pasien.TanggalLahir,
 	})
 }
 
+// ======================== hapuseun
 // data pasien satuan
 // GET DataPasienSatuan <= /pasien/satuan/:id_pasien
 func DataPasienSatuan(c *gin.Context) {

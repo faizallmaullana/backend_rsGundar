@@ -42,7 +42,8 @@ func main() {
 	r.GET("/api/v1/resources/poli", medical_record.GetAllPoli) // tested
 
 	// profile
-	r.GET("/api/v1/resources/profile/:user_id", profile.Profile) // tested
+	r.GET("/api/v1/resources/profile/:user_id", profile.Profile)        // tested
+	r.POST("/api/v1/resources/profile/:user_id", profile.UpdateProfile) // tested
 
 	// medical records
 	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)                          //

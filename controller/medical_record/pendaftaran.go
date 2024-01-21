@@ -1,5 +1,6 @@
 // POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran/:pasien_id
 // GET DataFromPendaftaran <= /data/from/pendaftaran/id_pendaftaran
+// GET LIST
 
 package medical_record
 

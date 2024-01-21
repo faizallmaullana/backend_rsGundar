@@ -34,7 +34,7 @@ func GetAllPoli(c *gin.Context) {
 	for _, poli := range poliList {
 		decryptedName := strings.Title(encryption.Decrypt(poli.Poli))
 		decryptedPoliList = append(decryptedPoliList, map[string]interface{}{
-			"name": decryptedName,
+			"nama": decryptedName,
 			"id":   poli.ID, // Assuming ID is the field name in the Poli struct
 		})
 	}
