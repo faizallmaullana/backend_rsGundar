@@ -1,3 +1,5 @@
+// GET GetAllMedicalRecord <= /medical_record/all
+
 package medical_record
 
 import (
@@ -9,7 +11,7 @@ import (
 
 func GetAllMedicalRecord(c *gin.Context) {
 	var medicalRecord []models.MedicalRecord
-	if err := models.DB.Find(&medicalRecord); err != nil {
+	if err := models.DB.Preload("Pasien").Preload("Profile").Preload("Profile.ProfileDokter").Preload("ProfileDokter").Preload("ProfileDokter.Poli").Preload("Diagnosis").Find(&medicalRecord); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database tidak bisa diakses"})
 		return
 	}

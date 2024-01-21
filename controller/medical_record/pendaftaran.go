@@ -1,3 +1,5 @@
+// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
+
 package medical_record
 
 import (
@@ -14,6 +16,7 @@ type InputPendaftaran struct {
 	Biaya    string `json:"biaya"`
 }
 
+// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
 func PendafataranMedicalRecord(c *gin.Context) {
 	var input InputPendaftaran
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -22,7 +25,7 @@ func PendafataranMedicalRecord(c *gin.Context) {
 	}
 
 	var profileDokter models.Users
-	if err := models.DB.Where("id = ?", input.DokterID).Preload("dokter").First(&profileDokter).Error; err != nil {
+	if err := models.DB.Where("id = ?", input.DokterID).Preload("Dokter").First(&profileDokter).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Dokter tidak ditemukan"})
 		return
 	}

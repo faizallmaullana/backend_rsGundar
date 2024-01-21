@@ -44,8 +44,10 @@ func main() {
 	r.GET("/api/v1/resources/profile/:user_id", profile.Profile)
 
 	// medical records
+	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)
 	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)
 	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)
+	r.POST("/api/v1/resources/medicalRecord/pendaftaran", medical_record.PendafataranMedicalRecord)
 
 	// statistik
 	r.GET("/api/v1/resources/statistik", statistik.Statistik)
