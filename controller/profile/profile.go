@@ -5,7 +5,6 @@
 package profile
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -79,8 +78,14 @@ func UpdateProfile(c *gin.Context) {
 		return
 	}
 
+	var userDB models.Users
+	if err := models.DB.Where("id = ?", c.Param("user_id")).First(&userDB).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User tidak ditemukan"})
+		return
+	}
+
 	var profileDB models.Profile
-	if err := models.DB.Where("id = ?", c.Param("id_profile")).First(&profileDB); err != nil {
+	if err := models.DB.Where("id = ?", userDB.IDProfile).First(&profileDB).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Profile tidak ditemukan"})
 		return
 	}
@@ -89,21 +94,24 @@ func UpdateProfile(c *gin.Context) {
 	nama := encryption.Encrypt(input.Nama)
 	alamat := encryption.Encrypt(input.Alamat)
 
-	date := input.TanggalLahir
-	layout := "02-01-2006"
-
 	// Load the UTC+7 (Indochina Time) location
 	location, err := time.LoadLocation("Asia/Bangkok")
 	if err != nil {
-		fmt.Println("Error loading location:", err)
 		return
 	}
 
 	// Parse the date in the specified location
+	var date string
+	layout := "02-01-2006"
+	if date != "" {
+		date = input.TanggalLahir
+	}
+
 	parsedTanggalLahir, err := time.ParseInLocation(layout, date, location)
-	if err != nil {
-		fmt.Println("Error parsing time:", err)
-		return
+	if date != "" {
+		if err != nil {
+			return
+		}
 	}
 
 	// convert request gender to bool
@@ -114,6 +122,8 @@ func UpdateProfile(c *gin.Context) {
 		gender = false
 	}
 
+	password, _ := encryption.HashPassword(input.Password)
+
 	dataProfile := models.Profile{
 		Nama:         nama,
 		Alamat:       alamat,
@@ -121,10 +131,16 @@ func UpdateProfile(c *gin.Context) {
 		TanggalLahir: parsedTanggalLahir,
 	}
 
+	dataUser := models.Users{
+		Password: password,
+	}
+
 	models.DB.Model(&profileDB).Update(&dataProfile)
+	models.DB.Model(&userDB).Update(&dataUser)
 
 	c.JSON(http.StatusCreated, gin.H{
-		"id_profile": dataProfile.ID,
-		"nama":       encryption.Decrypt(dataProfile.Nama),
+		"user_id": userDB.ID,
+		"nama":    encryption.Decrypt(profileDB.Nama),
+		"gender":  profileDB.Gender,
 	})
 }

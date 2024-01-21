@@ -22,8 +22,8 @@ func ListAllDokter(c *gin.Context) {
 	for _, dokter := range dokterList {
 		decryptedName := strings.Title(encryption.Decrypt(dokter.Profile.Nama))
 		decrytedDokterList = append(decrytedDokterList, map[string]interface{}{
-			"name": decryptedName,
-			"id":   dokter.ID, // Assuming ID is the field name in the Poli struct
+			"nama": decryptedName,
+			"id":   dokter.ID,
 		})
 	}
 

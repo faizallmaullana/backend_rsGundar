@@ -1,6 +1,6 @@
 // authentication/controller.go
 
-// POST Registrasi <= /api/v1/resource/admin/registration
+// POST Registrasi <= /api/v1/resource/registration/admin
 
 // di halaman ini terdapat tanggal lahir, yang menerima data berupa string (dd-mm-yyyy)
 
@@ -33,7 +33,7 @@ type InputRegistrasi struct {
 
 // ================================================================
 
-// Registration <= POST api/v1/resources/admin/registration
+// Registration <= POST api/v1/resources/registration/admin
 func Registrasi(c *gin.Context) {
 
 	// request handler

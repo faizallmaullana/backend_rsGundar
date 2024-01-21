@@ -53,9 +53,9 @@ type MedicalRecord struct {
 	IDDiagnosis string `json:"id_diagnosis"`
 
 	// reference to
-	Pasien    Pasien        `json:"pasien" gorm:"foreignKey:IDPasien"`
-	Dokter    ProfileDokter `json:"profile_dokter" gorm:"foreignKey:IDDokter"`
-	Diagnosis Diagnosis     `json:"diagnosis" gorm:"foreignKey:IDDiagnosis"`
+	Pasien    Pasien    `json:"pasien" gorm:"foreignKey:IDPasien"`
+	Dokter    Users     `json:"profile_dokter" gorm:"foreignKey:IDDokter"`
+	Diagnosis Diagnosis `json:"diagnosis" gorm:"foreignKey:IDDiagnosis"`
 }
 
 type Income struct {

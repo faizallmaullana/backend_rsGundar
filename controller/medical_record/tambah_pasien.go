@@ -5,6 +5,7 @@ package medical_record
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/faizallmaullana/be_rsGundar/encryption"
@@ -80,6 +81,6 @@ func TambahPasien(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"id":   id,
 		"nik":  dataPasien.Nik,
-		"nama": encryption.Decrypt(dataPasien.Nama),
+		"nama": strings.Title(encryption.Decrypt(dataPasien.Nama)),
 	})
 }
