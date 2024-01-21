@@ -1,4 +1,4 @@
-// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
+// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran/:pasien_id
 // GET DataFromPendaftaran <= /data/from/pendaftaran/id_pendaftaran
 
 package medical_record
@@ -15,15 +15,20 @@ import (
 
 type InputPendaftaran struct {
 	DokterID string `json:"dokter_id"`
-	PasienID string `json:"pasien_id"`
 	Biaya    int    `json:"biaya"`
 }
 
-// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran
+// POST PendaftaranMedicalRecord <= /medicalRecord/pendaftaran/:pasien_id
 func PendafataranMedicalRecord(c *gin.Context) {
 	var input InputPendaftaran
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var Pasien models.Pasien
+	if err := models.DB.Where("id = ?", c.Param("pasien_id")).First(&Pasien).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Pasien tidak ditemukan"})
 		return
 	}
 
@@ -39,7 +44,7 @@ func PendafataranMedicalRecord(c *gin.Context) {
 	dataPendaftaran := models.TempPendaftaran{
 		ID:       id,
 		IDDokter: input.DokterID,
-		IDPasien: input.PasienID,
+		IDPasien: Pasien.ID,
 		Biaya:    input.Biaya,
 	}
 

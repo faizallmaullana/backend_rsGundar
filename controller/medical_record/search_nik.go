@@ -1,4 +1,5 @@
 // GET SearchNik <= /api/v1/resources/pasien/:nik
+// GET DataPasienSatuan <= /pasien/satuan/:id_pasien
 
 package medical_record
 
@@ -40,5 +41,26 @@ func SearchNik(c *gin.Context) {
 		"alamat":  alamat,
 		"nama":    nama,
 		"gender":  gender,
+	})
+}
+
+// data pasien satuan
+// GET DataPasienSatuan <= /pasien/satuan/:id_pasien
+func DataPasienSatuan(c *gin.Context) {
+	var Pasien models.Pasien
+	if err := models.DB.Where("id = ?", c.Param("id_pasien")).First(&Pasien).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Data pasien tidak ditemukan"})
+		return
+	}
+
+	var MedicalRecords []models.MedicalRecord
+	if err := models.DB.Where("id_pasien = ?", Pasien.ID).Preload("Pasien").Preload("Dokter").Preload("Diagnosis").Find(&MedicalRecords).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "data medis tidak ditemukan"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data_pasien": Pasien,
+		"data_medis":  MedicalRecords,
 	})
 }

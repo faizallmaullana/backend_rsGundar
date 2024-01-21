@@ -2,8 +2,10 @@ package base_on_page
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
+	"github.com/faizallmaullana/be_rsGundar/encryption"
 	"github.com/faizallmaullana/be_rsGundar/models"
 	"github.com/gin-gonic/gin"
 )
@@ -11,11 +13,21 @@ import (
 // get /antrianPoli/:idDokter
 func AntrianPoli(c *gin.Context) {
 	var Antrian []models.TempPendaftaran
-	if err := models.DB.Where("id_dokter = ?", c.Param("idDokter")).Find(&Antrian).Error; err != nil {
+	dbAntrian := models.DB.Where("id_dokter = ?", c.Param("idDokter"))
+	dbPreAntrian := dbAntrian.Preload("Pasien")
+	if err := dbPreAntrian.Find(&Antrian).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "data antrian tidak ditemukan"})
 		return
 	}
 
+	var decryptedAntrian []map[string]interface{}
+	for _, antrian := range Antrian {
+		decryptedName := strings.Title(encryption.Decrypt(antrian.Pasien.Nama))
+		decryptedAntrian = append(decryptedAntrian, map[string]interface{}{
+			"name": decryptedName,
+			"id":   antrian.ID,
+		})
+	}
 	// Dapatkan waktu mulai hari ini
 	todayStart := time.Now().Truncate(24 * time.Hour)
 
@@ -23,13 +35,14 @@ func AntrianPoli(c *gin.Context) {
 	todayEnd := todayStart.Add(24 * time.Hour).Add(-time.Second)
 
 	var AntrianSelesai []models.MedicalRecord
-	if err := models.DB.Where("created_at BETWEEN ? AND ?", todayStart, todayEnd).Find(&AntrianSelesai).Error; err != nil {
+	dbAntrianSelesai := models.DB.Where("created_at BETWEEN ? AND ?", todayStart, todayEnd)
+	if err := dbAntrianSelesai.Find(&AntrianSelesai).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "data medis tidak ditemukan"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"dalam_antrian":   Antrian,
-		"selesai_antrian": AntrianSelesai,
+		"selesai_diperiksa":       AntrianSelesai,
+		"belum_selesai_diperiksa": decryptedAntrian,
 	})
 }

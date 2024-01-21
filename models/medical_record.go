@@ -36,8 +36,8 @@ type TempPendaftaran struct {
 	Biaya    int    `json:"biaya"`
 
 	// reference to
-	Pasien Pasien        `json:"pisien" gorm:"foreignKey:IDPasien"`
-	Dokter ProfileDokter `json:"profile_dokter" gorm:"foreignKey:IDokter"`
+	Pasien Pasien `json:"pasien" gorm:"foreignKey:IDPasien"`
+	Dokter Users  `json:"dokter" gorm:"foreignKey:IDDokter"`
 }
 
 type MedicalRecord struct {

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
+	"github.com/faizallmaullana/be_rsGundar/controller/base_on_page"
 	"github.com/faizallmaullana/be_rsGundar/controller/medical_record"
 	"github.com/faizallmaullana/be_rsGundar/controller/profile"
 	"github.com/faizallmaullana/be_rsGundar/controller/statistik"
@@ -44,12 +45,16 @@ func main() {
 	r.GET("/api/v1/resources/profile/:user_id", profile.Profile) // tested
 
 	// medical records
-	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)                    //
-	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)                                     // tested
-	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)                               // tested
-	r.POST("/api/v1/resources/medicalRecord/pendaftaran", medical_record.PendafataranMedicalRecord)      // tested
-	r.GET("/api/v1/resources/dokter/list/all", medical_record.ListAllDokter)                             // tested
-	r.GET("/api/v1/resources/data/from/pendaftaran/:id_pendaftaran", medical_record.DataFromPendaftaran) // tested
+	r.GET("/api/v1/resources/medical_record/all", medical_record.GetAllMedicalRecord)                          //
+	r.GET("/api/v1/resources/pasien/:nik", medical_record.SearchNik)                                           // tested
+	r.POST("/api/v1/resources/pasien/tambah", medical_record.TambahPasien)                                     // tested
+	r.POST("/api/v1/resources/medicalRecord/pendaftaran/:pasien_id", medical_record.PendafataranMedicalRecord) // tested
+	r.GET("/api/v1/resources/dokter/list/all", medical_record.ListAllDokter)                                   // tested
+	r.GET("/api/v1/resources/data/from/pendaftaran/:id_pendaftaran", medical_record.DataFromPendaftaran)       // tested
+	r.GET("/api/v1/resources/pasien/satuan/:id_pasien", medical_record.DataPasienSatuan)                       // tested
+	r.POST("/api/v1/resources/dokter/medicalRecord/:idTempPendaftaran", base_on_page.MedicalRecord)            // tested
+
+	r.GET("/api/v1/resources/antrianPoli/:idDokter", base_on_page.AntrianPoli) // tested but need some
 
 	// statistik
 	r.GET("/api/v1/resources/statistik", statistik.Statistik)
