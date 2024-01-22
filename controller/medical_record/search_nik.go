@@ -13,9 +13,10 @@ import (
 )
 
 func SearchNik(c *gin.Context) {
+
 	var Pasien models.Pasien
 	if err := models.DB.Where("nik = ?", c.Param("nik")).First(&Pasien).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "Nik tidak ditemukan",
 			"status":  false,
 		})
@@ -55,6 +56,13 @@ func SearchNik(c *gin.Context) {
 		})
 	}
 
+	// formated tanggal lahir
+	// Assuming you have a time.Time variable named "myDate"
+	myDate := Pasien.TanggalLahir
+
+	// Format the date to "02 01 06" layout
+	formattedDate := myDate.Format("02-01-2006")
+
 	c.JSON(http.StatusOK, gin.H{
 		"message":       "Nik ditemukan",
 		"status":        true,
@@ -64,7 +72,7 @@ func SearchNik(c *gin.Context) {
 		"nama":          nama,
 		"gender":        gender,
 		"data_medis":    decryptedData,
-		"tanggal_lahir": Pasien.TanggalLahir,
+		"tanggal_lahir": formattedDate,
 	})
 }
 

@@ -49,6 +49,7 @@ func Login(c *gin.Context) {
 	// cek password
 	matchPassword := encryption.CheckPasswordHash(input.Password, user.Password)
 
+	fmt.Println(matchPassword)
 	fmt.Println("test    5")
 
 	if !matchPassword {

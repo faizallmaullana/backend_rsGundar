@@ -44,15 +44,23 @@ func Profile(c *gin.Context) {
 		gender = "Pria"
 	}
 
+	// formated tanggal lahir
+	// Assuming you have a time.Time variable named "myDate"
+	myDate := user.Profile.TanggalLahir
+
+	// Format the date to "02 01 06" layout
+	formattedDate := myDate.Format("02-01-2006")
+
 	// jika role user bukan dokter
 	if role != "dokter" {
 		c.JSON(http.StatusOK, gin.H{
-			"id_user":    user.ID,
-			"id_profile": user.IDProfile,
-			"nip":        user.Nip,
-			"nama":       nama,
-			"gender":     gender,
-			"alamat":     alamat,
+			"id_user":       user.ID,
+			"id_profile":    user.IDProfile,
+			"nip":           user.Nip,
+			"tanggal_lahir": formattedDate,
+			"nama":          nama,
+			"gender":        gender,
+			"alamat":        alamat,
 		})
 		return
 	}
@@ -65,7 +73,7 @@ func Profile(c *gin.Context) {
 		"nama":              nama,
 		"gender":            gender,
 		"alamat":            alamat,
-		"tanggal_lahir":     user.Profile.TanggalLahir,
+		"tanggal_lahir":     formattedDate,
 		"spesialisasi":      spesialisasi,
 		"poli":              poli,
 	})

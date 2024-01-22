@@ -26,6 +26,7 @@ func AntrianPoli(c *gin.Context) {
 		decryptedAntrian = append(decryptedAntrian, map[string]interface{}{
 			"nama": decryptedName,
 			"id":   antrian.ID,
+			"nik":  antrian.Pasien.Nik,
 		})
 	}
 	// Dapatkan waktu mulai hari ini
@@ -47,6 +48,7 @@ func AntrianPoli(c *gin.Context) {
 		kunjunganSelesai = append(kunjunganSelesai, map[string]interface{}{
 			"nama": decryptedName,
 			"id":   antrian.ID,
+			"nik":  antrian.Pasien.Nik,
 		})
 	}
 
