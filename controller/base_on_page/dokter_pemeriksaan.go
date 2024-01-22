@@ -45,7 +45,10 @@ func MedicalRecord(c *gin.Context) {
 
 	var dbDiagnosis models.Diagnosis
 	var DiagnosisID string
-	if err := models.DB.Where("diagnosis = ?", input.Diagnosis).First(&dbDiagnosis).Error; err != nil {
+	if err := models.DB.Where("diagnosis = ?", diagnosis).First(&dbDiagnosis).Error; err == nil {
+		// If a record is found, use the existing record's ID
+		DiagnosisID = dbDiagnosis.ID
+	} else {
 		// If no record found, create a new one
 		idDiagnosis := uuid.New().String()
 		dataDiagnosis := models.Diagnosis{
@@ -55,9 +58,6 @@ func MedicalRecord(c *gin.Context) {
 
 		models.DB.Create(&dataDiagnosis)
 		DiagnosisID = dataDiagnosis.ID
-	} else {
-		// If a record is found, use the existing record's ID
-		DiagnosisID = dbDiagnosis.ID
 	}
 
 	var Income models.Income

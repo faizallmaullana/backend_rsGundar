@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -37,4 +38,8 @@ func Nip(registrasi InputRegistrasi) (nip string) {
 	nip = fmt.Sprintf("%02d%2s%02d%2s%02d", bulanMasuk, tahunMasukStr[2:], bulanLahir, tahunLahirStr[2:], randomNumber)
 
 	return nip
+}
+
+func titleCase(data string) string {
+	return strings.Title(data)
 }

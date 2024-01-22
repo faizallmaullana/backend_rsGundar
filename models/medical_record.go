@@ -28,10 +28,10 @@ type Diagnosis struct {
 }
 
 type TempPendaftaran struct {
-	ID string `json:"id"`
+	ID string `json:"id" gorm:"primary_key"`
 
 	// foreign keys
-	IDPasien string `json:"id_pasien" gorm:"primary_key"`
+	IDPasien string `json:"id_pasien"`
 	IDDokter string `json:"id_dokter"`
 	Biaya    int    `json:"biaya"`
 
