@@ -65,6 +65,7 @@ func Profile(c *gin.Context) {
 		"nama":              nama,
 		"gender":            gender,
 		"alamat":            alamat,
+		"tanggal_lahir":     user.Profile.TanggalLahir,
 		"spesialisasi":      spesialisasi,
 		"poli":              poli,
 	})

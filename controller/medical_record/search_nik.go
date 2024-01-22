@@ -55,7 +55,7 @@ func SearchNik(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusFound, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"message":       "Nik ditemukan",
 		"status":        true,
 		"id":            Pasien.ID,
