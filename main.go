@@ -55,7 +55,8 @@ func main() {
 	r.GET("/api/v1/resources/pasien/satuan/:id_pasien", medical_record.DataPasienSatuan)                       // tested
 	r.POST("/api/v1/resources/dokter/medicalRecord/:idTempPendaftaran", base_on_page.MedicalRecord)            // tested
 
-	r.GET("/api/v1/resources/antrianPoli/:idDokter", base_on_page.AntrianPoli) // tested but need some
+	r.GET("/api/v1/resources/antrianPoli/:idDokter", base_on_page.AntrianPoli)     // tested but need some
+	r.GET("/api/v1/resources/pasienList/:idPasien", base_on_page.RiwayatKunjungan) // tested with
 
 	// statistik
 	r.GET("/api/v1/resources/statistik", statistik.Statistik)

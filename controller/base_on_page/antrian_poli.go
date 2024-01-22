@@ -1,6 +1,7 @@
 package base_on_page
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -37,7 +38,8 @@ func AntrianPoli(c *gin.Context) {
 
 	var AntrianSelesai []models.MedicalRecord
 	dbAntrianSelesai := models.DB.Where("created_at BETWEEN ? AND ?", todayStart, todayEnd)
-	if err := dbAntrianSelesai.Find(&AntrianSelesai).Error; err != nil {
+	dbPreload := dbAntrianSelesai.Preload("Pasien")
+	if err := dbPreload.Find(&AntrianSelesai).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "data medis tidak ditemukan"})
 		return
 	}
@@ -51,6 +53,7 @@ func AntrianPoli(c *gin.Context) {
 			"nik":  antrian.Pasien.Nik,
 		})
 	}
+	fmt.Println(AntrianSelesai)
 
 	c.JSON(http.StatusOK, gin.H{
 		"selesai_diperiksa":       kunjunganSelesai,

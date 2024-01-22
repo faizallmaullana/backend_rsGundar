@@ -16,8 +16,11 @@ func RiwayatKunjungan(c *gin.Context) {
 	}
 
 	var medical_record []models.MedicalRecord
-	if err := models.DB.Where("id_pasien = ?", c.Param("idPasien")).Preload("dokter").Preload("pasien").Preload("dokter.poli").Preload("diagnosis").Find(&medical_record).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Data medicalRecord tidak ditemukan"})
+	if err := models.DB.Where("id_pasien = ?", c.Param("idPasien")).Find(&medical_record).Error; err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error":      "Data medicalRecord tidak ditemukan",
+			"dataPasien": pasien.ID,
+		})
 		return
 	}
 
