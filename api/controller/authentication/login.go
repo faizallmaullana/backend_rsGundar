@@ -24,13 +24,11 @@ type InputLogin struct {
 
 // Login <= /api/v1/resources/login
 func Login(c *gin.Context) {
-	fmt.Println("test    1")
 	var input InputLogin
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("test    2")
 
 	// cek apakah nip terdaftar
 	var user models.Users
@@ -39,24 +37,18 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("test    3")
-
 	// dekripsi
 	role := encryption.Decrypt(user.Role)
-
-	fmt.Println("test    4")
 
 	// cek password
 	matchPassword := encryption.CheckPasswordHash(input.Password, user.Password)
 
 	fmt.Println(matchPassword)
-	fmt.Println("test    5")
 
 	if !matchPassword {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Password salah"})
 		return
 	}
-	fmt.Println("test    6")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login Berhasil",
