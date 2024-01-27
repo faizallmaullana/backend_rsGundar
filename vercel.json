@@ -1,9 +1,7 @@
 {
-  "trailingSlash": false,
-  "rewrites": [
-    {
-      "source":"./",
-      "destination":"./main.go"
+  "functions": {
+    "./*": {
+      "runtime": "vercel-go@1.0.0"
     }
-  ]
+  }
 }
