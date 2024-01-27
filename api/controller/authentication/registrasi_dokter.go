@@ -1,14 +1,8 @@
 // authentication/controller.go
 
-// POST Registrasi <= /api/v1/resource/staffPendaftaran/registration
+// POST Registrasi <= /api/v1/resource/dokter/registration
 
 // di halaman ini terdapat tanggal lahir, yang menerima data berupa string (dd-mm-yyyy)
-
-// di halaman ini dilakukan generate token, apabila belum ada siapapun yang masuk,
-// maka akan digunakan token default yaitu (tokenAdmin)
-// setelahnya akan dilakukan auto generate token 4 digit
-
-// NOTE: pada tambah dokter belum ditambahkan id poli
 
 package authentication
 
@@ -18,16 +12,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/faizallmaullana/be_rsGundar/encryption"
-	"github.com/faizallmaullana/be_rsGundar/models"
+	"github.com/faizallmaullana/be_rsGundar/api/encryption"
+	"github.com/faizallmaullana/be_rsGundar/api/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 // ================================================================
 
-// POST Registration <= POST api/v1/resources/staffPendaftaran/registration
-func RegistrasiStaffPendaftaran(c *gin.Context) {
+// Registration <= POST api/v1/resources/dokter/registration
+func RegistrasiDokter(c *gin.Context) {
 
 	// request handler
 	var Registrasi InputRegistrasi
@@ -39,6 +33,7 @@ func RegistrasiStaffPendaftaran(c *gin.Context) {
 	// generate the id
 	idUser := uuid.New().String()
 	idProfile := uuid.New().String()
+	idProfileDokter := uuid.New().String()
 
 	nip := Nip(Registrasi)
 
@@ -60,9 +55,10 @@ func RegistrasiStaffPendaftaran(c *gin.Context) {
 	}
 
 	// enkripsi
-	role := encryption.Encrypt("staffPendaftaran")
+	role := encryption.Encrypt("dokter")
 	nama := encryption.Encrypt(strings.ToLower(Registrasi.Nama))
 	alamat := encryption.Encrypt(strings.ToLower(Registrasi.Alamat))
+	spesialisasi := encryption.Encrypt(strings.ToLower(Registrasi.Spesialisasi))
 	password, _ := encryption.HashPassword("default")
 
 	// convert request gender to bool
@@ -75,11 +71,12 @@ func RegistrasiStaffPendaftaran(c *gin.Context) {
 
 	// save data for users table
 	User := models.Users{
-		ID:        idUser,
-		Nip:       nip,
-		Password:  password,
-		Role:      role,
-		IDProfile: idProfile,
+		ID:              idUser,
+		Nip:             nip,
+		Password:        password,
+		Role:            role,
+		IDProfile:       idProfile,
+		IDProfileDokter: idProfileDokter,
 	}
 
 	// save data for profile table
@@ -91,9 +88,17 @@ func RegistrasiStaffPendaftaran(c *gin.Context) {
 		TanggalLahir: parsedTanggalLahir,
 	}
 
+	// save data for profile dokter table
+	ProfileDokter := models.ProfileDokter{
+		ID:           idProfileDokter,
+		Spesialisasi: spesialisasi,
+		IDPoli:       Registrasi.PoliID,
+	}
+
 	// save data to the database
 	models.DB.Create(&User)
 	models.DB.Create(&Profile)
+	models.DB.Create(&ProfileDokter)
 
 	c.JSON(http.StatusCreated, gin.H{
 		"id":   User.ID,

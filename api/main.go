@@ -4,12 +4,12 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"github.com/faizallmaullana/be_rsGundar/controller/authentication"
-	"github.com/faizallmaullana/be_rsGundar/controller/base_on_page"
-	"github.com/faizallmaullana/be_rsGundar/controller/medical_record"
-	"github.com/faizallmaullana/be_rsGundar/controller/profile"
-	"github.com/faizallmaullana/be_rsGundar/controller/statistik"
-	"github.com/faizallmaullana/be_rsGundar/models"
+	"github.com/faizallmaullana/be_rsGundar/api/controller/authentication"
+	"github.com/faizallmaullana/be_rsGundar/api/controller/base_on_page"
+	"github.com/faizallmaullana/be_rsGundar/api/controller/medical_record"
+	"github.com/faizallmaullana/be_rsGundar/api/controller/profile"
+	"github.com/faizallmaullana/be_rsGundar/api/controller/statistik"
+	"github.com/faizallmaullana/be_rsGundar/api/models"
 )
 
 // initilaize the cors middleware

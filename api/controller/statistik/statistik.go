@@ -5,7 +5,7 @@ package statistik
 import (
 	"net/http"
 
-	"github.com/faizallmaullana/be_rsGundar/models"
+	"github.com/faizallmaullana/be_rsGundar/api/models"
 	"github.com/gin-gonic/gin"
 )
 

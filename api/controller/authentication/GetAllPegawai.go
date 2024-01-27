@@ -3,8 +3,8 @@ package authentication
 import (
 	"net/http"
 
-	"github.com/faizallmaullana/be_rsGundar/encryption"
-	"github.com/faizallmaullana/be_rsGundar/models"
+	"github.com/faizallmaullana/be_rsGundar/api/encryption"
+	"github.com/faizallmaullana/be_rsGundar/api/models"
 	"github.com/gin-gonic/gin"
 )
 
